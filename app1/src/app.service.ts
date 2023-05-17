@@ -5,11 +5,13 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   constructor(private readonly amqpConnection: AmqpConnection) {}
   async getHello(id: string): Promise<string> {
-    await this.amqpConnection.publish('Test', 'my-key2', {
-      msg: {
-        userId: id,
-      },
+    await this.amqpConnection.publish('Test2', 'my.update.event', {
+      msg: `${id} was updated`,
     });
+    await this.amqpConnection.publish('Test3', 'super.super', {
+      msg: `${id} was deleted`,
+    });
+
     return id;
   }
 }
